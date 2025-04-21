@@ -1,52 +1,52 @@
 [
   {
-    "buildingName": "Main Building",
-    "roomNumber": "101",
+    "buildingName": "UB",
+    "floorNumber": "4",
     "description": "Entrance Lobby"
   },
   {
-    "buildingName": "Main Building",
-    "roomNumber": "201",
-    "description": "Conference Room"
+    "buildingName": "UB",
+    "floorNumber": "6",
+    "description": "Near Lift"
   },
   {
-    "buildingName": "Library",
-    "roomNumber": "L1",
-    "description": "First Floor Reading Area"
+    "buildingName": "TP",
+    "floorNumber": "7",
+    "description": "Near Computer Lab"
   },
   {
-    "buildingName": "Library",
-    "roomNumber": "L2",
-    "description": "Second Floor Study Area"
+    "buildingName": "Architecture",
+    "floorNumber": "2",
+    "description": "Inside the Classroom"
   },
   {
-    "buildingName": "Cafeteria",
-    "roomNumber": "",
-    "description": "Main Dining Area"
+    "buildingName": "Java",
+    "floorNumber": ""
+    "description": "Near Evergreen"
   },
   {
-    "buildingName": "Sports Complex",
-    "roomNumber": "GYM",
-    "description": "Gymnasium"
+    "buildingName": "BEL",
+    "floorNumber": "3",
+    "description": "Infront of FittingLab"
   },
   {
-    "buildingName": "Sports Complex",
-    "roomNumber": "POOL",
-    "description": "Swimming Pool Area"
+    "buildingName": "Meenakshi",
+    "floorNumber": "Ground",
+    "description": "Infront of sofa"
   },
   {
-    "buildingName": "Dorm A",
-    "roomNumber": "",
-    "description": "Common Area"
+    "buildingName": "Auditorium",
+    "floorNumber": "1",
+    "description": "Inside Restroom"
   },
   {
-    "buildingName": "Dorm B",
-    "roomNumber": "",
-    "description": "Common Area"
+    "buildingName": "UB",
+    "floorNumber": "2",
+    "description": "Library"
   },
   {
-    "buildingName": "Parking Lot",
-    "roomNumber": "",
-    "description": "Main Campus Parking"
+    "buildingName": "UB",
+    "floorNumber": "1",
+    "description": "Own Book Reading Room"
   }
 ]
