@@ -28,7 +28,17 @@ private:
     const std::string DATA_DIR = "data";
     const std::string LOST_ITEMS_FILE = DATA_DIR + "/lost_items.json";
     const std::string FOUND_ITEMS_FILE = DATA_DIR + "/found_items.json";
+    const std::string LOCATIONS_FILE = DATA_DIR + "/locations.json";
 
+    // Location data structure
+    struct Location {
+        std::string name;
+        std::string roomNumber;
+        std::string description;
+    };
+    
+    std::vector<Location> predefinedLocations;
+    
     // Item category enum
     enum class ItemCategory {
         SMARTPHONE,
@@ -237,6 +247,108 @@ private:
         return ss.str();
     }
 
+    // Load predefined locations from JSON file
+    void loadLocations() {
+        predefinedLocations.clear();
+        
+        std::ifstream file(LOCATIONS_FILE);
+        if (!file.is_open()) {
+            std::cerr << "Failed to open locations file: " << LOCATIONS_FILE << std::endl;
+            return;
+        }
+        
+        std::string line;
+        std::string content;
+        
+        while (std::getline(file, line)) {
+            content += line;
+        }
+        
+        file.close();
+        
+        // Simple JSON parsing
+        if (content.empty() || content == "[]") {
+            return;
+        }
+        
+        // Strip outer brackets
+        content = content.substr(1, content.length() - 2);
+        
+        // Split by location
+        std::vector<std::string> locationStrings;
+        int braceDepth = 0;
+        std::string currentLocation;
+        
+        for (char c : content) {
+            if (c == '{') {
+                braceDepth++;
+                currentLocation += c;
+            } else if (c == '}') {
+                braceDepth--;
+                currentLocation += c;
+                
+                if (braceDepth == 0) {
+                    locationStrings.push_back(currentLocation);
+                    currentLocation = "";
+                    // Skip comma and space after item
+                    braceDepth = -1;
+                }
+            } else if (braceDepth == -1) {
+                if (c == ',') {
+                    braceDepth = 0;
+                }
+            } else {
+                currentLocation += c;
+            }
+        }
+        
+        // Parse each location
+        for (const auto& locStr : locationStrings) {
+            Location loc;
+            loc.name = extractJsonValue(locStr, "name");
+            loc.roomNumber = extractJsonValue(locStr, "roomNumber");
+            loc.description = extractJsonValue(locStr, "description");
+            predefinedLocations.push_back(loc);
+        }
+    }
+    
+    // Get location from user with predefined options
+    std::string getLocation() {
+        std::cout << "\nSelect location:" << std::endl;
+        std::cout << "1. Choose from predefined locations" << std::endl;
+        std::cout << "2. Enter custom location" << std::endl;
+        
+        int choice = getIntInput("Enter your choice: ", 1, 2);
+        
+        if (choice == 1) {
+            if (predefinedLocations.empty()) {
+                std::cout << "No predefined locations available. Please enter a custom location." << std::endl;
+                return getInput("Enter location: ");
+            }
+            
+            std::cout << "\nAvailable locations:" << std::endl;
+            for (size_t i = 0; i < predefinedLocations.size(); i++) {
+                std::cout << (i + 1) << ". " << predefinedLocations[i].name;
+                if (!predefinedLocations[i].roomNumber.empty()) {
+                    std::cout << " (Room " << predefinedLocations[i].roomNumber << ")";
+                }
+                std::cout << std::endl;
+            }
+            
+            int locChoice = getIntInput("Select location: ", 1, predefinedLocations.size());
+            const Location& selectedLoc = predefinedLocations[locChoice - 1];
+            
+            std::string locationStr = selectedLoc.name;
+            if (!selectedLoc.roomNumber.empty()) {
+                locationStr += " (Room " + selectedLoc.roomNumber + ")";
+            }
+            
+            return locationStr;
+        } else {
+            return getInput("Enter location: ");
+        }
+    }
+
     // Initialize data directory and files
     void initDataStorage() {
         try {
@@ -258,8 +370,15 @@ private:
                 file.close();
             }
             
+            if (!std::filesystem::exists(LOCATIONS_FILE)) {
+                std::ofstream file(LOCATIONS_FILE);
+                file << "[]";
+                file.close();
+            }
+            
             // Load existing data
             loadItems();
+            loadLocations();
         } catch (const std::exception& e) {
             std::cerr << "Error initializing data storage: " << e.what() << std::endl;
         }
@@ -760,7 +879,7 @@ public:
         std::string lostTime = getDateTime("When did you lose the item?");
         
         // Get location where item was lost
-        std::string location = getInput("Where did you lose the item? ");
+        std::string location = getLocation();
         
         // Get item details based on category
         std::map<std::string, std::string> itemDetails = getItemDetails(category);
@@ -793,7 +912,7 @@ public:
         std::string foundTime = getDateTime("When did you find the item?");
         
         // Get location where item was found
-        std::string location = getInput("Where did you find the item? ");
+        std::string location = getLocation();
         
         // Get item details based on category
         std::map<std::string, std::string> itemDetails = getItemDetails(category);
