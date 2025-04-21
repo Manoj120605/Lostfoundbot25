@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LostFound AI</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light-theme">
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span class="logo-text">LostFound AI</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="chat">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Chat Assistant</span>
+        </button>
+        <button class="nav-item" data-tab="lost-items">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+            <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"></path>
+            <path d="m10 13-2 2 2 2"></path>
+            <path d="m14 17 2-2-2-2"></path>
+          </svg>
+          <span>Lost Items</span>
+        </button>
+        <button class="nav-item" data-tab="found-items">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+            <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"></path>
+            <path d="m14 9-6 6"></path>
+            <path d="m10 9-2 2 2 2"></path>
+            <path d="m14 13 2 2-2 2"></path>
+          </svg>
+          <span>Found Items</span>
+        </button>
+        <button class="nav-item" data-tab="search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <span>Search Items</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <h3 class="recent-items-title">RECENT ITEMS</h3>
+        <div class="recent-items">
+          <button class="recent-item">Lost Smartphone - iPhone 13</button>
+          <button class="recent-item">Found Keys - Main Building</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <h1 id="page-title">LostFound Assistant</h1>
+        <div class="header-actions">
+          <button id="report-item-btn" class="report-btn hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M12 5v14"></path>
+              <path d="M5 12h14"></path>
+            </svg>
+            Report Item
+          </button>
+          <button id="theme-toggle" class="icon-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon moon-icon">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon sun-icon hidden">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M21 2v6h-6"></path>
+              <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
+              <path d="M3 22v-6h6"></path>
+              <path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Chat Interface -->
+        <div id="chat-tab" class="tab-content active">
+          <div class="chat-messages">
+            <div class="message assistant">
+              <div class="avatar">AI</div>
+              <div class="message-content">
+                <div class="message-header">
+                  <span class="sender">LostFound AI</span>
+                  <span class="timestamp">12:00 PM</span>
+                </div>
+                <div class="message-bubble">
+                  <p>Hello! I'm your LostFound AI assistant. I can help you:</p>
+                  <ul>
+                    <li>Report lost items</li>
+                    <li>Report found items</li>
+                    <li>Search for existing reports</li>
+                    <li>Match lost and found items</li>
+                  </ul>
+                  <p>How can I assist you today?</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <button class="icon-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+              </svg>
+            </button>
+            <textarea id="chat-input" placeholder="Type a message..."></textarea>
+            <button id="send-message" class="icon-btn" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="m22 2-7 20-4-9-9-4Z"></path>
+                <path d="M22 2 11 13"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Lost Items Tab -->
+        <div id="lost-items-tab" class="tab-content">
+          <div class="items-search">
+            <div class="search-input-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input type="text" class="search-input" placeholder="Search lost items...">
+              <button class="filter-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="items-list">
+            <div class="item-card">
+              <div class="item-header">
+                <h3 class="item-title">iPhone 13</h3>
+                <span class="status-badge open">OPEN</span>
+              </div>
+              <p class="item-location">UB, Floor 4 (Entrance Lobby)</p>
+              <p class="item-date">Lost on: 4/15/2023</p>
+              <p class="item-description">Black iPhone 13 with clear case and red popsocket</p>
+              <div class="item-actions">
+                <button class="btn-outline">View Details</button>
+                <button class="btn-outline">Mark as Found</button>
+              </div>
+            </div>
+            <div class="item-card">
+              <div class="item-header">
+                <h3 class="item-title">Brown Leather Wallet</h3>
+                <span class="status-badge open">OPEN</span>
+              </div>
+              <p class="item-location">TP, Floor 7 (Near Computer Lab)</p>
+              <p class="item-date">Lost on: 4/16/2023</p>
+              <p class="item-description">Brown leather wallet with ID card and some cash</p>
+              <div class="item-actions">
+                <button class="btn-outline">View Details</button>
+                <button class="btn-outline">Mark as Found</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Found Items Tab -->
+        <div id="found-items-tab" class="tab-content">
+          <div class="items-search">
+            <div class="search-input-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input type="text" class="search-input" placeholder="Search found items...">
+              <button class="filter-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="items-list">
+            <div class="item-card">
+              <div class="item-header">
+                <h3 class="item-title">Set of Keys</h3>
+                <span class="status-badge found">OPEN</span>
+              </div>
+              <p class="item-location">UB, Floor 6 (Near Lift)</p>
+              <p class="item-date">Found on: 4/16/2023</p>
+              <p class="item-description">Set of 3 keys with a blue keychain</p>
+              <div class="item-actions">
+                <button class="btn-outline">View Details</button>
+                <button class="btn-outline">Match to Owner</button>
+              </div>
+            </div>
+            <div class="item-card">
+              <div class="item-header">
+                <h3 class="item-title">Samsung Galaxy</h3>
+                <span class="status-badge found">OPEN</span>
+              </div>
+              <p class="item-location">Architecture, Floor 2 (Inside the Classroom)</p>
+              <p class="item-date">Found on: 4/15/2023</p>
+              <p class="item-description">Black Samsung Galaxy with cracked screen protector</p>
+              <div class="item-actions">
+                <button class="btn-outline">View Details</button>
+                <button class="btn-outline">Match to Owner</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Tab -->
+        <div id="search-tab" class="tab-content">
+          <div class="search-container">
+            <div class="search-input-wrapper full-width">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input type="text" class="search-input" placeholder="Search for lost or found items...">
+            </div>
+            
+            <div class="search-tabs">
+              <button class="search-tab-btn active" data-search-tab="all">All Items</button>
+              <button class="search-tab-btn" data-search-tab="lost">Lost Items</button>
+              <button class="search-tab-btn" data-search-tab="found">Found Items</button>
+            </div>
+            
+            <div class="search-filters">
+              <div class="filter-group">
+                <label class="filter-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  Location
+                </label>
+                <select class="filter-select">
+                  <option value="">All Buildings</option>
+                  <option value="UB">UB</option>
+                  <option value="TP">TP</option>
+                  <option value="Architecture">Architecture</option>
+                  <option value="Java">Java</option>
+                  <option value="BEL">BEL</option>
+                  <option value="Meenakshi">Meenakshi</option>
+                  <option value="Auditorium">Auditorium</option>
+                </select>
+              </div>
+              
+              <div class="filter-group">
+                <label class="filter-label">Category</label>
+                <select class="filter-select">
+                  <option value="">All Categories</option>
+                  <option value="Smartphone">Smartphone</option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Tablet">Tablet</option>
+                  <option value="Headphone">Headphone</option>
+                  <option value="Smartwatch">Smartwatch</option>
+                  <option value="Wallet">Wallet</option>
+                  <option value="Keys">Keys</option>
+                  <option value="Bag">Bag</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              
+              <div class="filter-group">
+                <label class="filter-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  Date Range
+                </label>
+                <div class="date-range">
+                  <input type="date" class="date-input" placeholder="From">
+                  <input type="date" class="date-input" placeholder="To">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="search-results">
+            <div class="item-card">
+              <div class="item-header">
+                <div class="item-title-with-badge">
+                  <span class="type-badge lost">LOST</span>
+                  <h3 class="item-title">iPhone 13</h3>
+                </div>
+                <span class="item-date-small">4/15/2023</span>
+              </div>
+              <p class="item-location">UB, Floor 4 (Entrance Lobby)</p>
+              <p class="item-description">Black iPhone 13 with clear case and red popsocket</p>
+              <div class="item-actions">
+                <button class="btn-outline">View Details</button>
+                <button class="btn-outline">I Found This</button>
+              </div>
+            </div>
+            
+            <div class="item-card">
+              <div class="item-header">
+                <div class="item-title-with-badge">
+                  <span class="type-badge found">FOUND</span>
+                  <h3 class="item-title">Set of Keys</h3>
+                </div>
+                <span class="item-date-small">4/16/2023</span>
+              </div>
+              <p class="item-location">UB, Floor 6 (Near Lift)</p>
+              <p class="item-description">Set of 3 keys with a blue keychain</p>
+              <div class="item-actions">
+                <button class="btn-outline">View Details</button>
+                <button class="btn-outline">This is Mine</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile -->
+      <div class="user-profile">
+        <div class="user-info">
+          <div class="user-avatar">G</div>
+          <div class="user-details">
+            <p class="user-name">Guest User</p>
+            <p class="user-email">guest@example.com</p>
+          </div>
+        </div>
+        <button class="icon-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Details Panel -->
+    <div class="details-panel">
+      <div class="details-header">
+        <h2>Item Details</h2>
+      </div>
+      <div class="details-content">
+        <div class="details-tabs">
+          <button class="details-tab active">Details</button>
+          <button class="details-tab">Actions</button>
+          <button class="details-tab">History</button>
+        </div>
+        <div class="details-info">
+          <p class="details-placeholder">Select an item to view details or start a conversation to report a lost or found item.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Lost Item Modal -->
+  <div id="report-lost-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Report a Lost Item</h2>
+        <button class="close-modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>Lost Item Report</h3>
+        
+        <div class="progress-steps">
+          <div class="step active">
+            <div class="step-number">1</div>
+            <div class="step-label">Category</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-label">Location</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-label">Time</div>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-label">Details</div>
+          </div>
+          <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-label">Personal</div>
+          </div>
+        </div>
+        
+        <div class="step-content">
+          <h4>Item Category</h4>
+          <div class="category-grid">
+            <button class="category-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                <path d="M12 18h.01"></path>
+              </svg>
+              <span>Smartphone</span>
+            </button>
+            <button class="category-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="2" y1="20" x2="22" y2="20"></line>
+              </svg>
+              <span>Laptop</span>
+            </button>
+            <button class="category-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+              </svg>
+              <span>Tablet</span>
+            </button>
+            <button class="category-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+              </svg>
+              <span>Headphone</span>
+            </button>
+            <button class="category-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <circle cx="12" cy="12" r="7"></circle>
+                <polyline points="12 9 12 12 13.5 13.5"></polyline>
+                <path d="M16.51 17.35l-.35 3.83a2 2 0 0 1-2 1.82H9.83a2 2 0 0 1-2-1.82l-.35-3.83m.01-10.7.35-3.83A2 2 0 0 1 9.83 1h4.35a2 2 0 0 1 2 1.82l.35 3.83"></path>
+              </svg>
+              <span>Smartwatch</span>
+            </button>
+            <button class="category-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8"></path>
+                <path d="M3.3 14a2 2 0 0 1 1.4-1h14.6c.56 0 1.08.28 1.4.73"></path>
+              </svg>
+              <span>Wallet</span>
+            </button>
+            <button class="category-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <circle cx="7.5" cy="15.5" r="5.5"></circle>
+                <path d="m21 2-9.6 9.6"></path>
+                <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
+              </svg>
+              <span>Keys</span>
+            </button>
+            <button class="category-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <rect x="3" y="8" width="18" height="12" rx="2" ry="2"></rect>
+                <path d="M7 8V6a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2"></path>
+              </svg>
+              <span>Bag</span>
+            </button>
+            <button class="category-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <path d="M12 17h.01"></path>
+              </svg>
+              <span>Other</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="modal-actions">
+          <button class="btn-outline">Cancel</button>
+          <div class="action-group">
+            <button class="btn-primary">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Found Item Modal -->
+  <div id="report-found-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Report a Found Item</h2>
+        <button class="close-modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Similar content to lost item modal but with "Found" wording -->
+        <h3>Found Item Report</h3>
+        
+        <div class="progress-steps">
+          <div class="step active">
+            <div class="step-number">1</div>
+            <div class="step-label">Category</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-label">Location</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-label">Time</div>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-label">Details</div>
+          </div>
+          <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-label">Personal</div>
+          </div>
+        </div>
+        
+        <div class="step-content">
+          <h4>Item Category</h4>
+          <div class="category-grid">
+            <!-- Same category buttons as in lost item modal -->
+            <!-- ... -->
+          </div>
+        </div>
+        
+        <div class="modal-actions">
+          <button class="btn-outline">Cancel</button>
+          <div class="action-group">
+            <button class="btn-primary">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="locations-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
