@@ -1,0 +1,52 @@
+[
+  {
+    "buildingName": "Main Building",
+    "roomNumber": "101",
+    "description": "Entrance Lobby"
+  },
+  {
+    "buildingName": "Main Building",
+    "roomNumber": "201",
+    "description": "Conference Room"
+  },
+  {
+    "buildingName": "Library",
+    "roomNumber": "L1",
+    "description": "First Floor Reading Area"
+  },
+  {
+    "buildingName": "Library",
+    "roomNumber": "L2",
+    "description": "Second Floor Study Area"
+  },
+  {
+    "buildingName": "Cafeteria",
+    "roomNumber": "",
+    "description": "Main Dining Area"
+  },
+  {
+    "buildingName": "Sports Complex",
+    "roomNumber": "GYM",
+    "description": "Gymnasium"
+  },
+  {
+    "buildingName": "Sports Complex",
+    "roomNumber": "POOL",
+    "description": "Swimming Pool Area"
+  },
+  {
+    "buildingName": "Dorm A",
+    "roomNumber": "",
+    "description": "Common Area"
+  },
+  {
+    "buildingName": "Dorm B",
+    "roomNumber": "",
+    "description": "Common Area"
+  },
+  {
+    "buildingName": "Parking Lot",
+    "roomNumber": "",
+    "description": "Main Campus Parking"
+  }
+]
